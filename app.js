@@ -1,17 +1,50 @@
-    const heading =  
-    [
-        // React.createElement('h1',{id:"heading"},"hello world")
+   import React, { lazy,Suspense } from 'react';
+   import ReactDOM from 'react-dom/client';
+   import Header from './src/Header';
+   import Body from './src/Body';
+   import Contact from './src/Contact';
+//    import About from './src/About';
+   import Error from './src/Error';
+   import { createBrowserRouter,Outlet,RouterProvider } from 'react-router-dom';
+   import RestaurantMenu from './src/Restaurantmenu';
+ 
+   
+   
+   const About = lazy(() => import('./src/About'));
+   const App = () =>{
+    return (<div>
+        <Header/>
+        <Outlet/>
+    </div>)
+   }
+   const router = createBrowserRouter([
+    {
+        path :"/",
+        element : <App />,
+        children: [
+            {
+                path :"/",
+                element : <Body />
+            },
+            {
+                path :"/about",
+                element : <Suspense fallback = {<h1>loading...</h1>}><About /></Suspense>
+            },
+            {
+                path :"/contact",
+                element : <Contact />
+            },
+            {
+                path :"/restaurant/:resid",
+                element : <RestaurantMenu />
+            },
+        ],
+        errorElement : <Error/>,
 
-        React.createElement('div',{id:"div1"},
-        [
-            React.createElement('h1',{id:"heading"},"Hello world"),
-            React.createElement('h2',{id:"heading2"},"Hello world h2")
-        ]),
-        React.createElement('div',{id:"div2"},
-        [
-            React.createElement('h1',{id:"heading"},"Hello world from div 2 h1"),
-            React.createElement('h2',{id:"heading2"},"Hello world from div 2 h2")
-        ])
-    ]
+    },
+   
+
+
+   ])
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(heading)
+    root.render(<RouterProvider router = {router}/>)
