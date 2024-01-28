@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import { useState,useEffect } from "../node_modules/react";
+import { useState,useEffect,useContext } from "../node_modules/react";
 import Restaurantcard,{PromotedRestaurantCard} from "./RestaurantCard";
 import Shammer from "./Shammer";
 import UseOnlineStatus from "../utils/useOnlineStatus";
+import userContext from "./userContext";
+
 const Body = ()=>{
     const val = true
+    const {loggedInUser,setUserName} = useContext(userContext)
     const PromotedRestaurants = PromotedRestaurantCard(Restaurantcard)
     const onlineStatus = UseOnlineStatus();//show messege on getting offline (custom hook)
     const [restaurantList,setRestaurantList] = useState([]);//array destruction
@@ -45,6 +48,10 @@ const Body = ()=>{
                     }}>toprated restaurant</button>
             
            </div>
+
+           <input className="m-2 border-solid border border-black text-cyan-600" type="text" value={loggedInUser} onChange={(e)=>{
+                        setUserName(e.target.value);
+            }}></input>
                 
         
         <div className='flex flex-wrap '>
